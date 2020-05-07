@@ -1,10 +1,10 @@
 import java.math.BigDecimal;
 
 public class Item implements Identifyable {
-	String name;
-	BigDecimal price; // I've heard that money shouldn't be represented as doubles because
+	private String name;
+	private BigDecimal price; // I've heard that money shouldn't be represented as doubles because
 	// of precision errors
-	int stock;
+	private int stock;
 	String identificationNumber; 
 	
 	public boolean equals(Item other) {

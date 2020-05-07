@@ -9,8 +9,18 @@ public class Employee implements Identifyable {
 				.contentEquals(other.getIdentificationNumber());
 	}
 	
-	
-	
+	public Employee(String identificationNumber) {
+		super();
+		this.identificationNumber = identificationNumber;
+	}
+
+	public Employee(String name, String identificationNumber, Department dept) {
+		super();
+		this.name = name;
+		this.identificationNumber = identificationNumber;
+		this.dept = dept;
+	}
+
 	public String getName() {
 		return name;
 	}

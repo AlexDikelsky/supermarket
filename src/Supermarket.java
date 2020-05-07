@@ -2,13 +2,16 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Supermarket extends Test {
+public class Supermarket extends Test
+{
 	private ArrayList<Item> items;
 	private ArrayList<Employee> emps;
 	private ArrayList<Department> depts;
 	private ArrayList<Customer> customers;
 	private Date date;
 	private BigDecimal funds;
+	
+	
 	
 	//I thought about doing the add methods with generics, however
 	//each is appended to different lists, so it wouldn't work unless
@@ -22,7 +25,6 @@ public class Supermarket extends Test {
 	public boolean remove(Item i, int amount) {
 		//Note that this doesn't add funds back to the store after items are
 		//remvoved
-		
 		int loc = 0;
 		boolean found = false;
 		while (!found && loc < items.size()) {
@@ -32,11 +34,9 @@ public class Supermarket extends Test {
 			}
 			loc += 1;
 		}
-		
 		//Use of ternary operator
 		loc = found ? loc : -1;
 		
-		System.out.println(loc);
 		if (loc != -1) {
 			Item searched_item = items.get(loc);
 			if (searched_item.getStock() - amount >= 0) {
@@ -58,22 +58,49 @@ public class Supermarket extends Test {
 		return false;
 	}
 
-	public boolean remove(Department d) {
-		int loc = 0; 
+	//Generics
+	//Didn't want to rewrite everyhing from the remove thing, so I addced the "removeIfFound" option
+	public boolean look(ArrayList<? extends Identifyable> list, Identifyable i, boolean removeIfFound) {
+		int loc = 0;
 		boolean found = false;
-		while (loc < depts.size()) { 
-			System.out.println(loc);
-			if (depts.get(loc).equals(d)) {
-				System.out.println("Made");
-				depts.remove(loc);
+		//Can't do this with indexOf because indexOf compares objects not equality
+		//There's probably a way to do this with Iterators, but they were not covered in this class
+		while (loc < list.size() && !found) { 
+			if (list.get(loc).getIdentificationNumber()
+					.contentEquals(i.getIdentificationNumber()))
+			{
+				found = true;
+				if (removeIfFound) 
+					//Remove by index here
+					{ list.remove(loc); }
+					//loc doesn't matter after this point, so don't need to worry about the
+					//fact that loc now is the index greater than the correct one
 			}
 			loc += 1;
 		}
-		return !(loc == depts.size());
-		
+		return found;
 	}
+	
+	//Couldn't get good uses of generics here because each
+	//type is stored in a differnt list, so I would need a bunch of instanceof
+	//stuff to get it to work 
+	public boolean remove(Department d) {
+		return look(depts, d, true);
+	}	
+	public boolean remove(Customer c) {
+		return look(customers, c, true);
+	}	
 	public boolean remove(Employee e) { 
-		return safeRemove(emps, e);
+		return look(emps, e, true);
+	}
+	public boolean contains(Employee e) {
+		return look(emps, e, false);
+	}
+	public boolean contains(Customer c) {
+		return look(customers, c, false);
+	}
+	public boolean contains(Department d) {
+		return look(depts, d, false);
 	}
 	
 	public ArrayList<Item> getItems() {
@@ -112,6 +139,5 @@ public class Supermarket extends Test {
 	}
 	public void setFunds(BigDecimal funds) {
 		this.funds = funds;
-	}
-		
+	}		
 }

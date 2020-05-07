@@ -3,16 +3,19 @@ import java.awt.event.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-public class OrderPage extends Supermarket {
+public class OrderPage {
 	
 	private ArrayList<Row> rows;
 	JLabel title;
 	JButton calculate;
 	JLabel total;
 	JButton confirm;
+	Supermarket supermarket;
 	
 	//Looks at supermarket, and 
-	public OrderPage(ArrayList<Item> items) {
+	public OrderPage(Supermarket supermarket) {
+		ArrayList<Item> items = supermarket.getItems();
+		this.supermarket = supermarket;
 		
 		title = new JLabel("Order");
 		calculate = new JButton("Calc");
@@ -32,9 +35,12 @@ public class OrderPage extends Supermarket {
 				(ActionEvent e) -> {
 					//Mutates supermarket to increase funds
 					//TODO This ignores stock of items
-					super.setFunds(getFunds().add(sumOverRows()));
+					System.out.println(supermarket);
+					System.out.println(supermarket.getDepts());
+					System.out.println(sumOverRows().toString());
+//					supermarket.setFunds(
+//							supermarket.getFunds().add(sumOverRows()));
 				
-					
 					});
 					
 		this.rows = new ArrayList<Row>();

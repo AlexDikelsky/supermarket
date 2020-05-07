@@ -1,44 +1,52 @@
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.ArrayList;
 
-public class SignIn extends Supermarket {
+public class SignIn {
 	JLabel title;
 	JTextField id;
 	JLabel idIdentifier;
 	JButton submitId;
-	JButton guest;
 	JButton newAccount;
+	Supermarket supermarket;
 	
-	public SignIn() {
+	public SignIn(Supermarket supermarket) {
+		this.supermarket = supermarket;
+		
 		title = new JLabel("Sign In Here!");
 		id = new JTextField(40);
 		idIdentifier = new JLabel("ID number:");
 		submitId = new JButton("Log In");
-		guest = new JButton("Order as Guest");
 		newAccount = new JButton("Create a new Account here");
 		
 		title.setBounds(300, 20, 200, 30);
 		id.setBounds(170, 70, 100, 30);
 		idIdentifier.setBounds(60, 70, 100, 30);
 		submitId.setBounds(300, 200, 200, 30);
-		guest.setBounds(300, 300, 200, 30);
-		newAccount.setBounds(300, 400, 200, 30);
+		newAccount.setBounds(300, 400, 250, 30);
+
+		newAccount.addActionListener(
+				(asdf) -> {
+					Test.newObj(supermarket, Thing.CUSTOMER);
+				});
 		
-		submitId.addActionListener((ActionEvent e) -> {
-			if (super.getCustomers().contains(id.getText())
-					|| super.getEmps().contains(id.getText())) {
-				Test.clear();
-				//Test.order(super.getItems());
+		submitId.addActionListener((ActionEvent hlsadf) -> {
+			if (supermarket.contains(new Customer(id.getText()))) {
+				Test.order(this.supermarket);
+			}
+			else if ( supermarket.contains(new Employee(id.getText()))) {
+				Test.pick(this.supermarket);
+			}
+			else {
+				JOptionPane.showMessageDialog(title, "Unrecognized ID");
 			}
 		});
 	}
+	
 	public void add(JFrame f) {
 		f.add(title);
 		f.add(id);
 		f.add(idIdentifier);
 		f.add(submitId);
-		f.add(guest);
 		f.add(newAccount);
 	}
 }
